@@ -18,11 +18,11 @@ This website will allow its visitors to read posts about places in the U.S. whic
 
 ## Technologies Used
 
-HTML5
-CSS
-Python
-Django
-AWS
+1. HTML5
+2. CSS
+3. Python
+4. Django
+5. AWS
 
 
 ## Layout
