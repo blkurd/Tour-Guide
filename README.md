@@ -12,7 +12,20 @@ This website will allow its visitors to read posts about places in the U.S. whic
 6. As a signed in user, I would like to create posts.
 7. As a signed in user, I would like to update my posts.
 8. As a signed in user, I would like to delete my posts.
-9. As a signed in user, I would like to be able to make a post private or public. 
+
+## WireFrames
+
+- Index Page
+![Index](image2.png)
+
+- Sign Up Page
+![signup](image4.png)
+
+- Tour Article Details Page
+![detail](image3.png)
+
+- Tour Article Details Page
+![detail](image1.png)
 
 ## ERD
 
