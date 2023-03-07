@@ -15,16 +15,16 @@ This website will allow its visitors to read posts about places in the U.S. whic
 
 ## WireFrames
 
-- Index Page
+1. Index Page
 ![](Images/image2.png)
 
-- Sign Up Page
+2. Sign Up Page
 ![](Images/image4.png)
 
-- Tour Article Details Page
+3. Tour Article Details Page
 ![](Images/image3.png)
 
-- Create Article Page
+4. Create Article Page
 ![](Images/image1.png)
 
 ## ERD
