@@ -33,6 +33,8 @@ Create Article Page
 
 ## ERD
 
+![ERD](ERD.png)
+
 ## Technologies Used
 
 1. HTML5
@@ -41,6 +43,4 @@ Create Article Page
 4. Django
 5. AWS
 
-
-## Layout
 
