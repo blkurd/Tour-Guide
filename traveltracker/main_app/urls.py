@@ -9,9 +9,9 @@ urlpatterns = [
 
   path('about/', views.about, name='about'),
 
-  path('trips/', views.trips_index, name='index'),
+  path('trips/', views.trips_index, name='trip-index'),
 
-  path('experiences/', views.experiences_index, name='index'),
+  path('experiences/', views.experiences_index, name='experience-index'),
 
   path('experiences/<int:experience_id>/', views.experience_detail, name='detail'),
 

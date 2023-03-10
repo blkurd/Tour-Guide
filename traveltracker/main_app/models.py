@@ -9,5 +9,5 @@ class Trip(models.Model):
 
 class Experience (models.Model):
    expenses = models.IntegerField() 
-   description = models.CharField(max_length=500)
+   description = models.TextField(max_length=500)
    location = models.CharField(max_length=100)

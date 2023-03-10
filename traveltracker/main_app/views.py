@@ -28,7 +28,7 @@ def experiences_index(request):
 
 def experience_detail(request, experience_id):
     experience = Experience.objects.get(id=experience_id)
-    return render(request, 'experiences/experinece_detail', { 'experience': experience })
+    return render(request, 'experiences/experience_detail.html', { 'experience': experience })
 
 # trips = [
 #   {'date': 13, 'country': 'Spain'},

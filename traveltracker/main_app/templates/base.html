@@ -18,9 +18,12 @@
           <li><a href="/" class="left brand-logo">&nbsp;&nbsp;Travel Tracker</a></li>
         </ul>
         <ul class="right">
-          <li><a href="/about">About</a></li>
-          <li><a href="/trips">View Trips</a></li>
-          <li><a href="/experiences">View Experiences</a></li>
+          <!-- <li><a href="/about">About</a></li> -->
+          <li><a href="{% url 'about' %}">About</a></li>
+          <!-- <li><a href="/trips">View Trips</a></li> -->
+          <li><a href="{% url 'trip-index' %}">View Trips</a></li>
+          <!-- <li><a href="/experiences">View Experiences</a></li> -->
+          <li><a href="{% url 'experience-index' %}">View Experiences</a></li>
         </ul>
       </div>
     </nav>
