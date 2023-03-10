@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.generic.edit import CreateView
 from .models import Trip
 from .models import Experience
 
@@ -30,12 +31,26 @@ def experience_detail(request, experience_id):
     experience = Experience.objects.get(id=experience_id)
     return render(request, 'experiences/experience_detail.html', { 'experience': experience })
 
-# trips = [
-#   {'date': 13, 'country': 'Spain'},
-#   {'date': 22, 'country': 'Italy'},
-# ]
+
+class TripCreate(CreateView):
+    model = Trip
+    # fields here is an attribute and is required for a createview. It talk to the form and tells it to use all of its fields
+    fields = '__all__'
+    # like this -----> fields = ["country", "location"] but using fields = '__all__' is best practice. 
+
+
+class ExperienceCreate(CreateView):
+    model = Experience
+    fields = '__all__'
+
+# Now we need to add a redirect when we make a success in making a form 
+
+# success_url= '/trips/{trip_id}'
 
 
 
+# or, we could redirect to the index page if we want
 
+# success_url= '/trips/'
 
+# success_url= '/experiences/{experience_id}'
