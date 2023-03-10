@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Experiences List</h1>
+
+{% for expreience in experiences %}
+  <div class="card">
+    <div class="card-content">
+      <p>Expenses: {{ expreience.expenses }}$</p>
+      <p>Description: {{ expreience.description }}</p>
+      <p>Location: {{ expreience.location }}</p>
+    </div>
+  </div>
+{% endfor %}
+
+{% endblock %}
