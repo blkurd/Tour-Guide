@@ -9,7 +9,7 @@ urlpatterns = [
 
   path('about/', views.about, name='about'),
 
-  path('trips/', views.trips_index, name='trip-index'),
+  path('trips/', views.trips_index, name='trips'),
   path('trips/create', views.TripCreate.as_view(), name='trip-create'),
 
   path('experiences/', views.experiences_index, name='experience-index'),

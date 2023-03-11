@@ -14,5 +14,8 @@ class Experience (models.Model):
    location = models.CharField(max_length=100)
 
 # This link is used to direct to the trip index page after submiting a form. 
+# def get_absolute_url(self):
+#     return reverse('trips', kwargs={'trip_id': self.id })
+
 def get_absolute_url(self):
-    return reverse('trips', kwargs={'trip_id': self.id })
+    return reverse('detail', kwargs={'experience_id': self.id })

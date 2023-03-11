@@ -36,6 +36,7 @@ class TripCreate(CreateView):
     model = Trip
     # fields here is an attribute and is required for a createview. It talk to the form and tells it to use all of its fields
     fields = '__all__'
+    success_url= '/trips'
     # like this -----> fields = ["country", "location"] but using fields = '__all__' is best practice. 
 
 
@@ -47,10 +48,6 @@ class ExperienceCreate(CreateView):
 
 # success_url= '/trips/{trip_id}'
 
-
-
 # or, we could redirect to the index page if we want
-
-# success_url= '/trips/'
 
 # success_url= '/experiences/{experience_id}'
