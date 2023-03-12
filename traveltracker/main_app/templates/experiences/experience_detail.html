@@ -8,6 +8,12 @@
       <p>Expenses: {{ experience.expenses }}$</p>
       <p>Description: {{ experience.description }}</p>
     </div>
+    
+    <div class="card-action">
+      <a href="{% url 'experience-update' experience.id %}">Update</a>
+      <a href="{% url 'experience-delete' experience.id %}">Delete</a>
+    </div>
+
   </div>
 
 

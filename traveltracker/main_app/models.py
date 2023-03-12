@@ -17,5 +17,5 @@ class Experience (models.Model):
 # def get_absolute_url(self):
 #     return reverse('trips', kwargs={'trip_id': self.id })
 
-def get_absolute_url(self):
-    return reverse('detail', kwargs={'experience_id': self.id })
+   def get_absolute_url(self):
+      return reverse('detail', kwargs={'experience_id': self.id })

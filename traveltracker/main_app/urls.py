@@ -10,10 +10,17 @@ urlpatterns = [
   path('about/', views.about, name='about'),
 
   path('trips/', views.trips_index, name='trips'),
-  path('trips/create', views.TripCreate.as_view(), name='trip-create'),
+  path('trips/create/', views.TripCreate.as_view(), name='trip-create'),
+ 
 
   path('experiences/', views.experiences_index, name='experience-index'),
-  path('trips/create', views.ExperienceCreate.as_view(), name='experience-create'),
+  
+  path('experiences/create/', views.ExperienceCreate.as_view(), name='experience-create'),
+
+  path('experiences/<int:pk>/update/', views.ExperienceUpdate.as_view(), name='experience-update'),
+
+  path('experiences/<int:pk>/delete/', views.ExperienceDelete.as_view(), name='experience-delete'),
+
 
   path('experiences/<int:experience_id>/', views.experience_detail, name='detail'),
 
