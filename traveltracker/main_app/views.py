@@ -46,6 +46,7 @@ class TripUpdate(UpdateView):
     model = Trip  
     fields = ['country']
     success_url='/trips'
+
 class TripDelete(DeleteView):
     model = Trip
     success_url='/trips'
@@ -56,6 +57,8 @@ class TripDelete(DeleteView):
 class ExperienceCreate(CreateView):
     model = Experience
     fields = '__all__'
+    success_url='/experiences'
+    
 
 # Now we need to add a redirect when we make a success in making a form 
 # or, we could redirect to the index page if we want
@@ -64,7 +67,9 @@ class ExperienceCreate(CreateView):
 class ExperienceUpdate(UpdateView):
     model = Experience  
     fields = ['expenses', 'description', 'location']
-   
+    success_url='/experiences'
+
+
 class ExperienceDelete(DeleteView):
     model = Experience
     success_url='/experiences'

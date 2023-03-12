@@ -13,9 +13,42 @@ class Experience (models.Model):
    description = models.TextField(max_length=500)
    location = models.CharField(max_length=100)
 
+# A tuple of 2-tuples
+TRANSPORTATION = (
+    ('F', 'Air'),
+    ('R', 'Car'),
+    ('B', 'Bus'),
+    ('T', 'Train'),
+    ('S', 'Ship'),
+    ('B', 'Bicycle')
+
+)
+
+# Add new Feeding model below Experience model
+class Feeding(models.Model):
+   date = models.DateField("Experience Date")
+   transportation = models.CharField(
+       max_length=1,
+    # add the 'choices' field option
+       choices=TRANSPORTATION,
+    # set the default value for meal to be 'B'
+       default=TRANSPORTATION[0][0]
+   )
+
+   # Add experience forign key reference
+   # on_delete=models.CASCADE, means that when one experience is deleteld, all realted feedings are going to be deleted along with it. 
+   experience = models.ForeignKey(Experience, on_delete=models.CASCADE)
+
+   def __str__(self):
+      # Nice method for obtaining the friendly value of a Field.choice
+      # Below< is a method from Django and it is produced like this: get_<name_of_field>_dispaly()
+      return f"{self.get_transportation_display()} on {self.date}"
+
 # This link is used to direct to the trip index page after submiting a form. 
 # def get_absolute_url(self):
 #     return reverse('trips', kwargs={'trip_id': self.id })
 
    def get_absolute_url(self):
       return reverse('detail', kwargs={'experience_id': self.id })
+   
+  
