@@ -9,6 +9,10 @@
       <p>Date: {{ trip.date }}</p>
       <p>Country: {{ trip.country }}</p>
     </div>
+    <div class="card-action">
+      <a href="{% url 'trip-update' trip.id %}">Update</a>
+      <a href="{% url 'trip-delete' trip.id %}">Delete</a>
+    </div>
   </div>
 {% endfor %}
 

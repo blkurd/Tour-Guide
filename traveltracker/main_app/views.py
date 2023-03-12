@@ -36,12 +36,19 @@ class TripCreate(CreateView):
     model = Trip
 
     # fields here is an attribute and is required for a createview. It talk to the form and tells it to use all of its fields
-
     fields = '__all__'
     success_url = '/trips'
 
     # like this -----> fields = ["country", "location"] but using fields = '__all__' is best practice. 
     # success_url= '/trips/{trip_id}'
+
+class TripUpdate(UpdateView):
+    model = Trip  
+    fields = ['country']
+    success_url='/trips'
+class TripDelete(DeleteView):
+    model = Trip
+    success_url='/trips'
 
 
 #  __________________________Experience CRUD_____________________________________________
@@ -58,9 +65,6 @@ class ExperienceUpdate(UpdateView):
     model = Experience  
     fields = ['expenses', 'description', 'location']
    
-
-
-
 class ExperienceDelete(DeleteView):
     model = Experience
-    
+    success_url='/experiences'
