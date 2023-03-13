@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Experience Details</h1>
+<h2>Experience Details</h2>
 
-<div class="row">
+
 <div class="col s6">
   <div class="card">
     <div class="card-content">
@@ -18,7 +18,13 @@
   </div>
 </div>
 
+
 <div class="clo s6">
+  <form action="{% url 'add_feeding' experience.id %}" method="POST">
+    {% csrf_token %}
+    {{ feeding_form.as_p }}
+    <input type="submit" class="btn" value="Add Feeding">
+  </form>
   <table class="striped">
     <thead>
       <tr><th>Date</th><th>Transportation</th></tr>
@@ -34,7 +40,22 @@
   </table>
 
 </div>
-</div>
 
+  <script>
 
+    const dateEl = document.getElementById('id_date')
+    // M is materialize global variable
+    M.Datepicker.init(dateEl, {
+       format: 'yyyy-mm-dd',
+        defaultDate: new Date(),
+        setDefaultDate: true,
+        autoClose: true
+    })
+
+    // We are, again, using JavaScript here to fix up the selector tool for transportation
+
+    const selectEl = document.getElementById('id_transportation')
+    M.FormSelect.init(selectEl)
+
+  </script>
 {% endblock %}
