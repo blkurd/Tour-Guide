@@ -56,6 +56,21 @@ class Feeding(models.Model):
 class Meta:
    ordering = ['-date']
 
+class Photo(models.Model):
+    url = models.CharField(max_length=200)
+    experience = models.ForeignKey(Experience, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Photo for experience_id: {self.experience_id} @{self.url}"
+
+
+class Photo(models.Model):
+    url = models.CharField(max_length=200)
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Photo for trip_id: {self.trip_id} @{self.url}"
+
 
 
   
