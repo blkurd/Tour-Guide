@@ -28,8 +28,9 @@ urlpatterns = [
 
 
   path('experiences/<int:experience_id>/', views.experience_detail, name='detail'),
-  
+
   path('experiences/<int:experience_id>/add_feeding/', views.add_feeding, name='add_feeding'),
+  
 
 
 

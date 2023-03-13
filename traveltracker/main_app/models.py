@@ -50,5 +50,12 @@ class Feeding(models.Model):
 
    def get_absolute_url(self):
       return reverse('detail', kwargs={'experience_id': self.id })
-   
+
+# We can change the default sort by date, means that it will sort dates from newest to oldest and adding the oldest date to the bottom
+# in the feeding choices by doing the following:
+class Meta:
+   ordering = ['-date']
+
+
+
   
