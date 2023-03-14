@@ -3,7 +3,6 @@
 <h2>Experience Details</h2>
 
 <div>
-
   {% for photo in experience.photo_set.all %}
       <img src="{{photo.url}}" alt="photo of experience" class="responsive-img card-panel">
   {% empty %}

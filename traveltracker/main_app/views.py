@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Trip, Experience
+from .models import Trip, Experience, Photo
 from .forms import FeedingFrom
 import uuid  #This is a python package for creating unique identifiers. 
 import boto3 # what we will use to connect s3
@@ -9,7 +9,7 @@ from django.conf import settings
 AWS_ACCESS_KEY = settings.AWS_ACCESS_KEY
 AWS_SECRET_ACCESS_KEY = settings.AWS_SECRET_ACCESS_KEY
 S3_BUCKET = settings.S3_BUCKET
-S3_BASE_URL = settings.S3_BUCKET_URL
+S3_BASE_URL = settings.S3_BASE_URL
 
 
 # Create your views here.
@@ -103,12 +103,13 @@ class ExperienceDelete(DeleteView):
 def add_photo(request, experience_id):
     # photo_file will be the name attribute of our form input
     # input type will be file 
-    photo_file = request.FILES.get('photo_file', None)
-
+    photo_file = request.FILES.get('photo-file', None)
+     # use conditional logic to make sure a file is present
     if photo_file: 
         # This accesses the s3 bucket and use it to create a reference to the boto3 client
         s3 = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
         # This line below is for creating a unique key for our photos
+        # create a unique key for our photos
         key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
         # We are going to use try ... except which is just like try .... catch in js
         # to handle the situation if anything should go wrong
