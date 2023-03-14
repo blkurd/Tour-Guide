@@ -9,7 +9,7 @@
       <p>Location: {{ expreience.location }}</p>
       <!-- <a href="/experiences/{{ expreience.id }}"> View Details</a> -->
       <!-- This is the other way of writing links in Django -->
-      <a href="{% url 'detail' expreience.id %}"> View Details</a>
+      <a href="{% url 'experience_detail' expreience.id %}"> View Details</a>
     </div>
   </div>
   {% endfor %}

@@ -2,10 +2,18 @@ from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Trip, Experience
 from .forms import FeedingFrom
+import uuid  #This is a python package for creating unique identifiers. 
+import boto3 # what we will use to connect s3
+from django.conf import settings
+
+AWS_ACCESS_KEY = settings.AWS_ACCESS_KEY
+AWS_SECRET_ACCESS_KEY = settings.AWS_SECRET_ACCESS_KEY
+S3_BUCKET = settings.S3_BUCKET
+S3_BASE_URL = settings.S3_BUCKET_URL
+
 
 # Create your views here.
 # Define the home view
-
 
 def home(request):
     # Include an .html file extension - unlike when rendering EJS templates
@@ -36,7 +44,7 @@ def add_feeding(request, experience_id):
         new_feeding = form.save(commit=False)
         new_feeding.experience_id = experience_id 
         new_feeding.save()
-    return redirect('detail', experience_id=experience_id)
+    return redirect('experience_detail', experience_id=experience_id)
 
 # Below is a detail route for experiences 
 # experience_id is defined, expecting an interger, in our url
@@ -52,7 +60,6 @@ def experience_detail(request, experience_id):
 #  _____________________________Trip CRUD_____________________________________________
 class TripCreate(CreateView):
     model = Trip
-
     # fields here is an attribute and is required for a createview. It talk to the form and tells it to use all of its fields
     fields = '__all__'
     success_url = '/trips'
@@ -91,3 +98,37 @@ class ExperienceUpdate(UpdateView):
 class ExperienceDelete(DeleteView):
     model = Experience
     success_url='/experiences'
+
+
+def add_photo(request, experience_id):
+    # photo_file will be the name attribute of our form input
+    # input type will be file 
+    photo_file = request.FILES.get('photo_file', None)
+
+    if photo_file: 
+        # This accesses the s3 bucket and use it to create a reference to the boto3 client
+        s3 = boto3.client('s3', aws_access_key_id=AWS_ACCESS_KEY, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+        # This line below is for creating a unique key for our photos
+        key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+        # We are going to use try ... except which is just like try .... catch in js
+        # to handle the situation if anything should go wrong
+        try:
+            # if success, it upload the photo file
+            s3.upload_fileobj(photo_file, S3_BUCKET, key)
+            # build the full url string to upload to s3
+            url = f"{S3_BASE_URL}{S3_BUCKET}/{key}"
+            # if our upload(that used boto3) was successful 
+            # we want to use that photo location to create a Photo model
+            photo = Photo(url=url, experience_id=experience_id)
+            # save the instance to the db = database
+            photo.save()
+        except Exception as error:
+            # print an error message
+            print('Error uploading photo', error)
+            return redirect('experience_detail', experience_id=experience_id)
+    # upon success redirect to detail page
+    return redirect('experience_detail', experience_id=experience_id)
+
+                          
+                           
+                            

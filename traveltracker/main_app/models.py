@@ -49,7 +49,7 @@ class Feeding(models.Model):
 #     return reverse('trips', kwargs={'trip_id': self.id })
 
    def get_absolute_url(self):
-      return reverse('detail', kwargs={'experience_id': self.id })
+      return reverse('experience_detail', kwargs={'experience_id': self.id })
 
 # We can change the default sort by date, means that it will sort dates from newest to oldest and adding the oldest date to the bottom
 # in the feeding choices by doing the following:
@@ -59,17 +59,11 @@ class Meta:
 class Photo(models.Model):
     url = models.CharField(max_length=200)
     experience = models.ForeignKey(Experience, on_delete=models.CASCADE)
-
     def __str__(self):
         return f"Photo for experience_id: {self.experience_id} @{self.url}"
 
 
-class Photo(models.Model):
-    url = models.CharField(max_length=200)
-    trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return f"Photo for trip_id: {self.trip_id} @{self.url}"
 
 
 

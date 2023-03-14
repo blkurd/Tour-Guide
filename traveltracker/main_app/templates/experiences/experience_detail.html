@@ -1,8 +1,26 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <h2>Experience Details</h2>
 
+<div>
+
+  {% for photo in experience.photo_set.all %}
+      <img src="{{photo.url}}" alt="photo of experience" class="responsive-img card-panel">
+  {% empty %}
+      <div class="card-panel teal-text center-align">No Photos to Display</div>
+  {% endfor %}
+  <!-- Here's where the photo form will live -->
+  <form class="card-panel" 
+        action="{% url 'add_photo' experience.id %}" 
+        method="POST" 
+        enctype="multipart/form-data"
+  >
+        {% csrf_token %}
+        <input type="file" name="photo-file" />
+        <br/><br/>
+        <input type="submit" class="btn" value="Upload Photo"/>
+  </form>
+  </div>
 
 <div class="col s6">
   <div class="card">
@@ -10,7 +28,7 @@
       <p>Expenses: {{ experience.expenses }}$</p>
       <p>Description: {{ experience.description }}</p>
     </div>
-    
+
     <div class="card-action">
       <a href="{% url 'experience-update' experience.id %}">Update</a>
       <a href="{% url 'experience-delete' experience.id %}">Delete</a>
@@ -18,45 +36,45 @@
   </div>
 </div>
 
-
 <div class="clo s6">
   <form action="{% url 'add_feeding' experience.id %}" method="POST">
-    {% csrf_token %}
-    {{ feeding_form.as_p }}
-    <input type="submit" class="btn" value="Add Feeding">
+    {% csrf_token %} {{ feeding_form.as_p }}
+    <input type="submit" class="btn" value="Add Feeding" />
   </form>
   <table class="striped">
     <thead>
-      <tr><th>Date</th><th>Transportation</th></tr>
+      <tr>
+        <th>Date</th>
+        <th>Transportation</th>
+      </tr>
     </thead>
     <tbody>
       {% for feeding in experience.feeding_set.all %}
-        <tr>
-            <td>{{ feeding.date }}</td>
-            <td>{{ feeding.get_transportation_display }}</td>
-            
-        </tr>
+      <tr>
+        <td>{{ feeding.date }}</td>
+        <td>{{ feeding.get_transportation_display }}</td>
+      </tr>
       {% endfor %}
     </tbody>
   </table>
-
 </div>
 
-  <script>
 
-    const dateEl = document.getElementById('id_date')
-    // M is materialize global variable
-    M.Datepicker.init(dateEl, {
-       format: 'yyyy-mm-dd',
-        defaultDate: new Date(),
-        setDefaultDate: true,
-        autoClose: true
-    })
 
-    // We are, again, using JavaScript here to fix up the selector tool for transportation
+<script>
+  const dateEl = document.getElementById("id_date");
+  // M is materialize global variable
+  M.Datepicker.init(dateEl, {
+    format: "yyyy-mm-dd",
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true,
+  });
 
-    const selectEl = document.getElementById('id_transportation')
-    M.FormSelect.init(selectEl)
+  // We are, again, using JavaScript here to fix up the selector tool for transportation
 
-  </script>
+  const selectEl = document.getElementById("id_transportation");
+  M.FormSelect.init(selectEl);
+</script>
+
 {% endblock %}
