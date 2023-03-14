@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-import dj_database_url
 import environ
 import os
 
@@ -61,7 +60,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -88,23 +86,22 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'traveltracker.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'traveltracker',
-#     }
-# }
-
 DATABASES = {
-    'default': dj_database_url.config(     
-    default='postgresql://postgres:postgres@localhost:5432/traveltracker',conn_max_age=600
-)}
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'traveltracker',
+    }
+}
+
+# DATABASES = {
+#     'default': dj_database_url.config(     
+#     default='postgresql://postgres:postgres@localhost:5432/traveltracker',conn_max_age=600
+# )}
 
 
 
@@ -151,7 +148,7 @@ if not DEBUG:
 
     # Turn on WhiteNoise storage backend that takes care of compressing static files
     # and creating unique names for each version so they can safely be cached forever.
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+  
 
 
 # Default primary key field type
