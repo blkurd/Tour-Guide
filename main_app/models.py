@@ -1,17 +1,22 @@
 from django.db import models
 from django.urls import reverse
+# Import the User
+from django.contrib.auth.models import User
 
 # Create your models here.
 
 class Trip(models.Model):
    date = models.DateField()
-   country = models.CharField(max_length=100) 
+   country = models.CharField(max_length=100)
 
 
 class Experience (models.Model):
    expenses = models.IntegerField() 
    description = models.TextField(max_length=500)
    location = models.CharField(max_length=100)
+   # add foreign key ref to use
+   user = models.ForeignKey(User, on_delete=models.CASCADE)
+
 
 # A tuple of 2-tuples
 TRANSPORTATION = (

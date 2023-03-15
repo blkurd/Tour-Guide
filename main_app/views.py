@@ -5,6 +5,15 @@ from .forms import FeedingFrom
 import uuid  #This is a python package for creating unique identifiers. 
 import boto3 # what we will use to connect s3
 from django.conf import settings
+# imports for signing up
+# we want to automatically log in signed up users
+from django.contrib.auth import login
+# we want to use the builtin form for our custom view for sign up
+from django.contrib.auth.forms import UserCreationForm
+# Import the login_required decorator
+from django.contrib.auth.decorators import login_required
+# Import the mixin for class-based views
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 AWS_ACCESS_KEY = settings.AWS_ACCESS_KEY
 AWS_SECRET_ACCESS_KEY = settings.AWS_SECRET_ACCESS_KEY
@@ -23,18 +32,19 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
-
+@login_required
 def trips_index(request):
     trips = Trip.objects.all()
     return render(request, 'trips/index.html', {
     'trips': trips})
 
-
+@login_required
 def experiences_index(request):
      experiences = Experience.objects.all()
      return render(request, 'experiences/experiences-index.html', {
      'experiences': experiences})
 
+@login_required
 def add_feeding(request, experience_id):
     # create a ModelFrom instance from the data in request.POST
     form = FeedingFrom(request.POST)
@@ -48,7 +58,7 @@ def add_feeding(request, experience_id):
 
 # Below is a detail route for experiences 
 # experience_id is defined, expecting an interger, in our url
-
+@login_required
 def experience_detail(request, experience_id):
     experience = Experience.objects.get(id=experience_id)
 # Here I am going to instantiate FeedingFrom to be rendered in the template 
@@ -58,7 +68,7 @@ def experience_detail(request, experience_id):
 
 
 #  _____________________________Trip CRUD_____________________________________________
-class TripCreate(CreateView):
+class TripCreate(LoginRequiredMixin, CreateView):
     model = Trip
     # fields here is an attribute and is required for a createview. It talk to the form and tells it to use all of its fields
     fields = '__all__'
@@ -67,19 +77,19 @@ class TripCreate(CreateView):
     # like this -----> fields = ["country", "location"] but using fields = '__all__' is best practice. 
     # success_url= '/trips/{trip_id}'
 
-class TripUpdate(UpdateView):
+class TripUpdate(LoginRequiredMixin, UpdateView):
     model = Trip  
     fields = ['country']
     success_url='/trips'
 
-class TripDelete(DeleteView):
+class TripDelete(LoginRequiredMixin, DeleteView):
     model = Trip
     success_url='/trips'
 
 
 #  __________________________Experience CRUD_____________________________________________
 
-class ExperienceCreate(CreateView):
+class ExperienceCreate(LoginRequiredMixin, CreateView):
     model = Experience
     fields = '__all__'
     success_url='/experiences'
@@ -89,17 +99,17 @@ class ExperienceCreate(CreateView):
 # or, we could redirect to the index page if we want
 # success_url= '/experiences/{experience_id}'
 
-class ExperienceUpdate(UpdateView):
+class ExperienceUpdate(LoginRequiredMixin, UpdateView):
     model = Experience  
     fields = ['expenses', 'description', 'location']
     success_url='/experiences'
 
 
-class ExperienceDelete(DeleteView):
+class ExperienceDelete(LoginRequiredMixin, DeleteView):
     model = Experience
     success_url='/experiences'
 
-
+@login_required
 def add_photo(request, experience_id):
     # photo_file will be the name attribute of our form input
     # input type will be file 
@@ -129,6 +139,29 @@ def add_photo(request, experience_id):
             return redirect('experience_detail', experience_id=experience_id)
     # upon success redirect to detail page
     return redirect('experience_detail', experience_id=experience_id)
+
+# view for signup
+def signup(request):
+    # this view is going to be like our class based views
+    # because this is going to be able to handle a GET and a POST request
+    error_message = ''
+    if request.method == 'POST':
+        # this is how to create a user form object that includes data from the browser
+        form = UserCreationForm(request.POST)
+        # now we check validity of the form, and handle our success and error situations
+        if form.is_valid():
+            # we'll add the user to the database
+            user = form.save()
+            # then we'll log the user in
+            login(request, user)
+            # redirect to our index page
+            return redirect('index')
+        else:
+            error_message = 'Invalid sign up - try again'
+    # a bad POST or GET request will render signup.html with an empty form
+    form = UserCreationForm()
+    context = {'form': form, 'error_message': error_message}
+    return render(request, 'registration/signup.html', context)
 
                           
                            
