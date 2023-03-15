@@ -32,15 +32,18 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
+
 @login_required
 def trips_index(request):
-    trips = Trip.objects.all()
+    # Adding .filter(user=request.user) instead of .all is to let the user see what he can only creates and not what others create.
+    trips = Trip.objects.filter(user=request.user)
     return render(request, 'trips/index.html', {
     'trips': trips})
 
 @login_required
 def experiences_index(request):
-     experiences = Experience.objects.all()
+     # Adding .filter(user=request.user) instead of .all is to let the user see what he can only creates and not what others create.
+     experiences = Experience.objects.filter(user=request.user)
      return render(request, 'experiences/experiences-index.html', {
      'experiences': experiences})
 
@@ -71,15 +74,25 @@ def experience_detail(request, experience_id):
 class TripCreate(LoginRequiredMixin, CreateView):
     model = Trip
     # fields here is an attribute and is required for a createview. It talk to the form and tells it to use all of its fields
-    fields = '__all__'
+    # the fields attribute is required for a createview. These inform the form
+    # fields = '__all__'
+    # we could also have written our fields like this:
+    fields = ['date', 'country']
     success_url = '/trips'
+    def form_valid(self, form):
+        # we can assign the logged in user's data(id) to the experienc's create form
+        form.instance.user = self.request.user
+
+        return super().form_valid(form)
+
+
 
     # like this -----> fields = ["country", "location"] but using fields = '__all__' is best practice. 
     # success_url= '/trips/{trip_id}'
 
 class TripUpdate(LoginRequiredMixin, UpdateView):
     model = Trip  
-    fields = ['country']
+    fields = ['country', 'date']
     success_url='/trips'
 
 class TripDelete(LoginRequiredMixin, DeleteView):
@@ -91,8 +104,18 @@ class TripDelete(LoginRequiredMixin, DeleteView):
 
 class ExperienceCreate(LoginRequiredMixin, CreateView):
     model = Experience
-    fields = '__all__'
+    # the fields attribute is required for a createview. These inform the form
+    # fields = '__all__'
+    # we could also have written our fields like this:
+    fields = ['expenses', 'description', 'location']
+    # we need to add redirects when we make a success
     success_url='/experiences'
+
+    def form_valid(self, form):
+        # we can assign the logged in user's data(id) to the experienc's create form
+        form.instance.user = self.request.user
+
+        return super().form_valid(form)
     
 
 # Now we need to add a redirect when we make a success in making a form 
@@ -140,28 +163,49 @@ def add_photo(request, experience_id):
     # upon success redirect to detail page
     return redirect('experience_detail', experience_id=experience_id)
 
-# view for signup
+# # view for signup
+# def signup(request):
+#     # this view is going to be like our class based views
+#     # because this is going to be able to handle a GET and a POST request
+#     error_message = ''
+#     if request.method == 'POST':
+#         # this is how to create a user form object that includes data from the browser
+#         form = UserCreationForm(request.POST)
+#         # now we check validity of the form, and handle our success and error situations
+#         if form.is_valid():
+#             # we'll add the user to the database
+#             user = form.save()
+#             # then we'll log the user in
+#             login(request, user)
+#             # redirect to our index page
+#             return redirect('experiences/experience-index')
+#         else:
+#             error_message = 'Invalid sign up - try again'
+#     # a bad POST or GET request will render signup.html with an empty form
+#     form = UserCreationForm()
+#     context = {'form': form, 'error_message': error_message}
+#     return render(request, 'registration/signup.html', context)
+
 def signup(request):
-    # this view is going to be like our class based views
-    # because this is going to be able to handle a GET and a POST request
-    error_message = ''
-    if request.method == 'POST':
-        # this is how to create a user form object that includes data from the browser
-        form = UserCreationForm(request.POST)
-        # now we check validity of the form, and handle our success and error situations
-        if form.is_valid():
-            # we'll add the user to the database
-            user = form.save()
-            # then we'll log the user in
-            login(request, user)
-            # redirect to our index page
-            return redirect('index')
-        else:
-            error_message = 'Invalid sign up - try again'
-    # a bad POST or GET request will render signup.html with an empty form
-    form = UserCreationForm()
-    context = {'form': form, 'error_message': error_message}
-    return render(request, 'registration/signup.html', context)
+  error_message = ''
+  if request.method == 'POST':
+    # This is how to create a 'user' form object
+    # that includes the data from the browser
+    form = UserCreationForm(request.POST)
+    if form.is_valid():
+      # This will add the user to the database
+      user = form.save()
+      # This is how we log a user in via code
+      login(request, user)
+      return redirect('experience-index')
+    else:
+      error_message = 'Invalid sign up - try again'
+  # A bad POST or a GET request, so render signup.html with an empty form
+  form = UserCreationForm()
+  context = {'form': form, 'error_message': error_message}
+  return render(request, 'registration/signup.html', context)
+
+
 
                           
                            

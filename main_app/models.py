@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 class Trip(models.Model):
    date = models.DateField()
    country = models.CharField(max_length=100)
-
+   user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Experience (models.Model):
    expenses = models.IntegerField() 
@@ -43,6 +43,7 @@ class Feeding(models.Model):
    # Add experience forign key reference
    # on_delete=models.CASCADE, means that when one experience is deleteld, all realted feedings are going to be deleted along with it. 
    experience = models.ForeignKey(Experience, on_delete=models.CASCADE)
+   
 
    def __str__(self):
       # Nice method for obtaining the friendly value of a Field.choice
